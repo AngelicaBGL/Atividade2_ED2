@@ -138,6 +138,9 @@ if __name__== "__main__":
     #except FileNotFoundError:
         #print('O arquivo não foi encontrado.')
      
+    #fazer um if else para as operações
+
+
     #try:
     #with open(temporario,"w") as arq_temporario:
         #Escrever arquivo com com registro excluido  
@@ -150,4 +153,4 @@ if __name__== "__main__":
     #except IOError:
         #print('Ocorreu um erro ao escrever o arquivo.')
             
-    
+   
