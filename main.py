@@ -24,8 +24,19 @@ def leituraDoArquivo(arquivo):
 
     return games
 #def adicionaRegistro(arq, game):
+# basicamente escrever um registro no final
+#modificar codigo, lembrar que estamos trabalhando com tamanho fixo e campos variados
+'''
+def escritaDoArquivo(arquivo, games):
+    linha=""
+    for game in games:
+        linha = f"{game.nome}|{game.produtora}|{game.genero}|{game.plataforma}|{game.ano}|{game.classificacao}|{game.preco}|{game.midia}|{game.tamanho}\n"
+        arquivo.write(linha)
+
+'''
 
 #def procuraRegistro(arq, game):
+#procurar registro e já deletar
 #reaproveitar esse codigo
 '''
 def ler_arquivo(arquivo):
