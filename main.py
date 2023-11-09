@@ -126,16 +126,28 @@ if __name__== "__main__":
     saida = sys.argv[4]
 
 
-    with open(entrada, "r") as arq_entrada:
-        jogos = leituraDoArquivo(arq_entrada)  
+    try:
+        with open(entrada, "r") as arq_entrada:
+            jogos = leituraDoArquivo(arq_entrada)  
+    except FileNotFoundError:
+        print('O arquivo não foi encontrado.')
 
-    #with open(operacao,"r") as arq_operacao:
-        #ler operações a serem realizadas
+    #try:
+        #with open(operacao,"r") as arq_operacao:
+            #ler operações a serem realizadas
+    #except FileNotFoundError:
+        #print('O arquivo não foi encontrado.')
      
+    #try:
     #with open(temporario,"w") as arq_temporario:
         #Escrever arquivo com com registro excluido  
+    #except FileNotFoundError:
+        #print('O arquivo não foi encontrado.')
 
+    #try:
     #with open(saida,"w") as arq_saida:
         #escrever arquivo com storageCompaction
+    #except FileNotFoundError:
+        #print('O arquivo não foi encontrado.')
             
     
