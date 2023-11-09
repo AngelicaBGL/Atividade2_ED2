@@ -141,13 +141,13 @@ if __name__== "__main__":
     #try:
     #with open(temporario,"w") as arq_temporario:
         #Escrever arquivo com com registro excluido  
-    #except FileNotFoundError:
-        #print('O arquivo não foi encontrado.')
+    #except IOError:
+        #print('Ocorreu um erro ao escrever o arquivo')
 
     #try:
     #with open(saida,"w") as arq_saida:
         #escrever arquivo com storageCompaction
-    #except FileNotFoundError:
-        #print('O arquivo não foi encontrado.')
+    #except IOError:
+        #print('Ocorreu um erro ao escrever o arquivo.')
             
     
