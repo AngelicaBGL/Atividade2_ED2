@@ -1,7 +1,9 @@
 from Game import *
 import sys
 
+#def adicionaRegistro(arq, game):
 
+#def procuraRegistro(arq, game):
 
 if __name__== "__main__":
     if len(sys.argv) !=5:
