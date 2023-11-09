@@ -54,14 +54,77 @@ def storageCompaction(registros, chave):
         for linha in linhas:
             arq_saida.write(linha + '\n')
 '''
+
+'''
+from Game import Game 
+import sys
+
+def grep(arquivo, palavra):
+    indices = []
+    linha_numero = 0  # Número da linha atual
+
+    for linha in arquivo:
+        campos = linha.strip().split('|')  # Separar os campos
+        for campo in campos:
+            if palavra.lower() in campo.lower():  #comparando string (ignorando maiúsculas/minúsculas)
+                indices.append(linha_numero) #salvar indices
+                break  # Se a palavra for encontrada, não precisa verificar o restante dos campos
+        linha_numero += 1
+
+    return indices
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Uso: python3 programa.py arquivo_entrada.txt")
+        sys.exit(1)
+
+    arquivo_entrada = sys.argv[1]
+
+    
+    with open(arquivo_entrada, 'r') as arquivo:
+        print("Digite uma palavra para a busca: ")
+        palavra = input()
+
+        resultados = grep(arquivo, palavra)
+
+        if resultados:
+            print("Palavra encontrada nas seguintes linhas:")
+            arquivo.seek(0)  # Voltar ao início do arquivo
+            lines = arquivo.readlines()
+            for linha_numero in resultados:
+                if linha_numero < len(lines):
+                    game = Game(*lines[linha_numero].strip().split('|'))
+                    print(game)
+        else:
+            print("A palavra não foi encontrada em nenhuma linha.")
+
+    
+'''
+
+
 if __name__== "__main__":
     if len(sys.argv) !=5:
         print("Uso: python3 programa.py entrada1.txt op.txt temp.txt saida.txt")
         sys.exit(1)
+
     jogos = []
 
     entrada = sys.argv[1]
+    operacao = sys.argv[2]
+    temporario = sys.argv[3]
+    saida = sys.argv[4]
+
+
     with open(entrada, "r") as arq_entrada:
-        jogos = leituraDoArquivo(arq_entrada)   
+        jogos = leituraDoArquivo(arq_entrada)  
+
+    #with open(operacao,"r") as arq_operacao:
+        #ler operações a serem realizadas
+     
+    #with open(temporario,"w") as arq_temporario:
+        #Escrever arquivo com com registro excluido  
+
+    #with open(saida,"w") as arq_saida:
+        #escrever arquivo com storageCompaction
             
     
