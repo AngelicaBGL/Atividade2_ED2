@@ -2,6 +2,8 @@ from Game import *
 import sys
 
 def leituraDoArquivo(arquivo):
+    #falta fazer: 
+    #ler a primeira linha para ter informações do arquivo
     games = []
     linha = arquivo.readline()
     if not linha:
