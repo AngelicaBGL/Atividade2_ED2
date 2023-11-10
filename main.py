@@ -28,6 +28,7 @@ def leituraDoArquivo(arquivo):
 #def adicionaRegistro(arq, game):
 
 # basicamente escrever um registro no final
+# não esquecer o topo da pilha
 #modificar codigo, lembrar que estamos trabalhando com tamanho fixo e campos variados
 '''
 def escritaDoArquivo(arquivo, games):
@@ -44,15 +45,16 @@ def procuraRegistro(games, chaves):
     linhas = []
     #adaptar codigo, a chave precisa ser dividida em duas
     for i, game in enumerate(games):
-        if chave.upper() in game.upper():  # Procura no formato canônico
+        if chaves.upper() in game.upper():  # Procura no formato canônico
             games[i] = "*|" + game[2:]
             encontrou = True
             #escrever o registro modificado no arquivo
+            #mudar topo
     if not encontrou:
         print("Registro não encontrado")
 
     if encontrou:
-        linhas = [registro for registro in registros if not registro.startswith('*|')]
+        linhas = [game for game in games if not game.startswith('*|')]
 
 
 '''
