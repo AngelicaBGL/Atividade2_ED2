@@ -111,7 +111,14 @@ if __name__ == "__main__":
 
     
 '''
-
+def lerOperacao(arq, dados):
+    linha = arquivo.readline()
+    if not linha:
+        return None
+    
+    arquivo.seek(0) #voltar para a primeira linha
+    #ler o primeiro caracter e salvar em op[]
+    #ler as strings seguintes e salvar em dados[]
 
 if __name__== "__main__":
     if len(sys.argv) !=5:
@@ -119,7 +126,9 @@ if __name__== "__main__":
         sys.exit(1)
 
     jogos = []
-
+    op = []
+    dados = []
+    
     entrada = sys.argv[1]
     operacao = sys.argv[2]
     temporario = sys.argv[3]
@@ -132,11 +141,12 @@ if __name__== "__main__":
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
 
-    #try:
-        #with open(operacao,"r") as arq_operacao:
+    try:
+        with open(operacao,"r") as arq_operacao:
             #ler operações a serem realizadas
-    #except FileNotFoundError:
-        #print('O arquivo não foi encontrado.')
+            op = lerOperacao(arq_operacao,dados)
+    except FileNotFoundError:
+        print('O arquivo não foi encontrado.')
      
     #fazer um if else para as operações
 
