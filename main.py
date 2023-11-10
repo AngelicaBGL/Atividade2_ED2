@@ -24,6 +24,7 @@ def leituraDoArquivo(arquivo):
 
     return games
 #def adicionaRegistro(arq, game):
+
 # basicamente escrever um registro no final
 #modificar codigo, lembrar que estamos trabalhando com tamanho fixo e campos variados
 '''
@@ -35,9 +36,23 @@ def escritaDoArquivo(arquivo, games):
 
 '''
 
-#def procuraRegistro(arq, game):
-#procurar registro e já deletar
-#reaproveitar esse codigo
+def procuraRegistro(games, chaves):
+    #procurar registro e já deletar
+    encontrou = False
+    linhas = []
+    #adaptar codigo, a chave precisa ser dividida em duas
+    for i, game in enumerate(games):
+        if chave.upper() in game.upper():  # Procura no formato canônico
+            games[i] = "*|" + game[2:]
+            encontrou = True
+            #escrever o registro modificado no arquivo
+    if not encontrou:
+        print("Registro não encontrado")
+
+    if encontrou:
+        linhas = [registro for registro in registros if not registro.startswith('*|')]
+
+
 '''
 def ler_arquivo(arquivo):
     registros = []
@@ -66,59 +81,27 @@ def storageCompaction(registros, chave):
             arq_saida.write(linha + '\n')
 '''
 
-'''
-from Game import Game 
-import sys
 
-def grep(arquivo, palavra):
-    indices = []
-    linha_numero = 0  # Número da linha atual
-
-    for linha in arquivo:
-        campos = linha.strip().split('|')  # Separar os campos
-        for campo in campos:
-            if palavra.lower() in campo.lower():  #comparando string (ignorando maiúsculas/minúsculas)
-                indices.append(linha_numero) #salvar indices
-                break  # Se a palavra for encontrada, não precisa verificar o restante dos campos
-        linha_numero += 1
-
-    return indices
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Uso: python3 programa.py arquivo_entrada.txt")
-        sys.exit(1)
-
-    arquivo_entrada = sys.argv[1]
-
-    
-    with open(arquivo_entrada, 'r') as arquivo:
-        print("Digite uma palavra para a busca: ")
-        palavra = input()
-
-        resultados = grep(arquivo, palavra)
-
-        if resultados:
-            print("Palavra encontrada nas seguintes linhas:")
-            arquivo.seek(0)  # Voltar ao início do arquivo
-            lines = arquivo.readlines()
-            for linha_numero in resultados:
-                if linha_numero < len(lines):
-                    game = Game(*lines[linha_numero].strip().split('|'))
-                    print(game)
-        else:
-            print("A palavra não foi encontrada em nenhuma linha.")
-
-    
-'''
-def lerOperacao(arq, dados):
-    linha = arquivo.readline()
+def lerOperacao(arq, games):
+    info=[]
+    linha = arq.readline()
     if not linha:
         return None
     
-    arquivo.seek(0) #voltar para a primeira linha
+    arq.seek(0) #voltar para a primeira linha
     #ler o primeiro caracter e salvar em op[]
     #ler as strings seguintes e salvar em dados[]
+    for linha in arq:
+        info = linha.strip().split(',') #separar na ,
+        op=info[0] #operacao
+        if op=='i':
+            #usar adicionaRegistro
+            #o codigo abaixo é uma gambiarra
+            games.append(info[1],info[2],info[3],info[4],info[5], info[6], info[7], info[8], info[9])
+        elif op=='d':
+            procuraRegistro(games,info[1])
+            
+            
 
 if __name__== "__main__":
     if len(sys.argv) !=5:
@@ -144,10 +127,13 @@ if __name__== "__main__":
     try:
         with open(operacao,"r") as arq_operacao:
             #ler operações a serem realizadas
-            op = lerOperacao(arq_operacao,dados)
+            lerOperacao(arq_operacao,jogos)
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
-     
+    
+    
+    print(op)
+    print(dados)
     #fazer um if else para as operações
 
 
