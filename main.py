@@ -47,6 +47,8 @@ def escritaDoArquivo(arquivo, games):
         arquivo.write(linha)
 
 '''
+#def removeRegistro()
+#dentro dessa função deve-se chamar procuraRegistro
 
 def procuraRegistro(games, chaves):
     #procurar registro e já deletar
@@ -107,6 +109,7 @@ def lerOperacao(arquivo, jogos):
 
             # Certifique-se de que há informações suficientes para criar uma instância de Game
             if len(info) == 9:
+                #fazer de novo, mas usar adicionaRegistro
                 nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
                 jogo = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
                 operacoes.append(('inserir', jogo))
@@ -114,7 +117,8 @@ def lerOperacao(arquivo, jogos):
             # Lógica para remover um jogo, se necessário
             pass
         # Adicione mais lógica para outras operações, se necessário
-
+    #acho que seria melhor retornar os jogos atualizados
+    #mudar codigo
     return operacoes
 
             
@@ -150,7 +154,6 @@ if __name__== "__main__":
         print('O arquivo não foi encontrado.')
     
    
-    #fazer um if else para as operações
 
 
     #try:
