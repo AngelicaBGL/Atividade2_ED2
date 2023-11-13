@@ -2,29 +2,42 @@ from Game import *
 import sys
 
 def leituraDoArquivo(arquivo):
-    #falta fazer: 
-    #ler a primeira linha para ter informações do arquivo
+    # falta fazer:
+    # ler a primeira linha para ter informações do arquivo
     games = []
     linha = arquivo.readline()
     if not linha:
         return None
-    
-    arquivo.seek(0) #voltar para a primeira linha
-    for linha in arquivo:
-        campos = linha.strip().split('|') #separar no |
-        if len(campos) == 9:
-            nome = campos[0]
-            produtora = campos[1]
-            genero = campos[2]
-            plataforma = campos[3]
-            ano = campos[4]
-            classificacao = campos[5]
-            preco = campos[6]
-            midia = campos[7]
-            tamanho = campos[8]
-            games.append(Game(nome,produtora,genero,plataforma,ano,classificacao,preco,midia,tamanho))
 
-    return games
+    arquivo.seek(0)  # voltar para a primeira linha
+    primeiraLinha = linha.strip()
+    infosArq = primeiraLinha.split()
+
+    # Verificar se há pelo menos dois elementos em infosArq
+    if len(infosArq) < 2:
+        return None
+
+    qtdRegistros_str = infosArq[0].split('=')
+    top_str = infosArq[1].split('=')
+
+    # Verificar se há pelo menos dois elementos em qtdRegistros_str e top_str
+    if len(qtdRegistros_str) < 2 or len(top_str) < 2:
+        return None
+
+    qtdRegistros = int(qtdRegistros_str[1])  # quantidade de registros no arquivo
+    top = int(top_str[1])
+    #esta dando erro aqui
+    for linha in arquivo:
+        campos = linha.strip().split('|')  # separar no |
+        print(len(campos))
+        if len(campos) == 9:
+            nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = campos
+            games.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
+           
+    
+
+    return games, qtdRegistros, top
+
 #def adicionaRegistro(arq, game):
 
 # basicamente escrever um registro no final
@@ -86,24 +99,28 @@ def storageCompaction(registros, chave):
 '''
 
 
-def lerOperacao(arq, games):
-    info=[]
-    linha = arq.readline()
-    if not linha:
-        return None
-    
-    arq.seek(0) #voltar para a primeira linha
-    #ler o primeiro caracter e salvar em op[]
-    #ler as strings seguintes e salvar em dados[]
-    for linha in arq:
-        info = linha.strip().split(',') #separar na ,
-        op=info[0] #operacao
-        if op=='i':
-            #usar adicionaRegistro
-            #o codigo abaixo é uma gambiarra
-            games.append(info[1],info[2],info[3],info[4],info[5], info[6], info[7], info[8], info[9])
-        elif op=='d':
-            procuraRegistro(games,info[1])
+def lerOperacao(arquivo, jogos):
+    operacoes = []
+
+    for linha in arquivo:
+        campos = linha.strip().split('|')
+        operacao = campos[0]
+
+        if operacao == 'inserir':
+            info = campos[1:]
+
+            # Certifique-se de que há informações suficientes para criar uma instância de Game
+            if len(info) == 9:
+                nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
+                jogo = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
+                operacoes.append(('inserir', jogo))
+        elif operacao == 'remover':
+            # Lógica para remover um jogo, se necessário
+            pass
+        # Adicione mais lógica para outras operações, se necessário
+
+    return operacoes
+
             
             
 
@@ -116,6 +133,7 @@ if __name__== "__main__":
     op = []
     dados = []
     
+    
     entrada = sys.argv[1]
     operacao = sys.argv[2]
     temporario = sys.argv[3]
@@ -124,10 +142,10 @@ if __name__== "__main__":
 
     try:
         with open(entrada, "r") as arq_entrada:
-            jogos = leituraDoArquivo(arq_entrada)  
+            jogos,qtdRegistros,top = leituraDoArquivo(arq_entrada)  
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
-
+    
     try:
         with open(operacao,"r") as arq_operacao:
             #ler operações a serem realizadas
@@ -135,9 +153,7 @@ if __name__== "__main__":
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
     
-    
-    print(op)
-    print(dados)
+   
     #fazer um if else para as operações
 
 
