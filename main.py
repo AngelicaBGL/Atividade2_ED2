@@ -2,9 +2,6 @@ from Game import *
 import sys
 
 def leituraDoArquivo(arquivo):
-    # falta fazer:
-    # ler a primeira linha para ter informações do arquivo
-    games = []
     linha = arquivo.readline()
     if not linha:
         return None
@@ -26,15 +23,14 @@ def leituraDoArquivo(arquivo):
 
     qtdRegistros = int(qtdRegistros_str[1])  # quantidade de registros no arquivo
     top = int(top_str[1])
-    #esta dando erro aqui
+    games = [qtdRegistros]
+
     for linha in arquivo:
         campos = linha.strip().split('|')  # separar no |
-        print(len(campos))
         if len(campos) == 9:
             nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = campos
             games.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
            
-    
 
     return games, qtdRegistros, top
 
