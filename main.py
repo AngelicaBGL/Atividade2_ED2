@@ -30,6 +30,9 @@ def leituraDoArquivo(arquivo):
 
     for linha in arquivo:
         campos = linha.strip().split('|')  # separar no |
+        # Preencher campos vazios com espaços em branco
+        campos = [campo if campo != '' else ' ' for campo in campos]
+
         if len(campos) == 9:
             nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = campos
             games.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
@@ -72,6 +75,7 @@ def procuraRegistro(games, chave, tamanho, top):
     for game in games:
         chave_registro = f"{game.nome}{game.ano}"
         chave_registro = chave_registro.replace(" ","") # tirar os espaços
+        chave_registro = chave_registro.replace("'","") # tirar os espaços
         indice += 1
         if chave.upper() in chave_registro.upper():
             games, tamanho, top = removeRegistro(games,tamanho, top,indice)
