@@ -24,7 +24,7 @@ def leituraDoArquivo(arquivo):
 
     qtdRegistros = int(qtdRegistros_str[1])  # quantidade de registros no arquivo
     top = int(top_str[1])
-    games = [qtdRegistros]
+    games = []
 
     for linha in arquivo:
         campos = linha.strip().split('|')  # separar no |
@@ -52,23 +52,16 @@ def escritaDoArquivo(arquivo, games):
 #dentro dessa função deve-se chamar procuraRegistro
 
 def procuraRegistro(games, chave):
-    # Utiliza expressão regular para verificar a correspondência
     padrao = re.compile(r'([A-Za-z0-9\s]+)(\d{4})')
     
-    # Itera sobre a lista de jogos
-    for jogo in games:
-        # Forma a chave para comparação
-        chave_registro = f"{jogo.nome}{jogo.ano}"
-
-        # Verifica a correspondência com a chave fornecida
+    for game in games:
+        chave_registro = f"{game.nome}{game.ano}"
         correspondencias = padrao.match(chave_registro)
 
-        # Se encontrou correspondência, imprime o registro e retorna
         if correspondencias and chave.upper() in chave_registro.upper():
-            print(f"Registro encontrado: {jogo.nome} | {jogo.ano}")
+            print(f"Registro encontrado: {game.nome} | {game.ano}")
             return
 
-    # Se não encontrou correspondência
     print("Registro não encontrado")
 
 '''
@@ -101,23 +94,19 @@ def storageCompaction(registros, chave):
 
 
 def lerOperacao(arquivo, jogos):
-    operacoes = []
 
     for linha in arquivo:
-        campos = linha.strip().split('|')
+        campos = linha.strip().split(',')
         operacao = campos[0]
-
-        if operacao == 'inserir':
+        print(operacao)
+        if operacao == 'i':
             info = campos[1:]
-
             # Certifique-se de que há informações suficientes para criar uma instância de Game
             if len(info) == 9:
                 #fazer de novo, mas usar adicionaRegistro
                 nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
-                jogos = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
-        elif operacao == 'remover':
-            print(operacao)
-            print(campos[1])
+                jogos.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
+        elif operacao == 'd':
             procuraRegistro(jogos,campos[1])
     #acho que seria melhor retornar os jogos atualizados
     #mudar codigo
