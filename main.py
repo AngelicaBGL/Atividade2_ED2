@@ -52,15 +52,24 @@ def escritaDoArquivo(arquivo, games):
 #dentro dessa função deve-se chamar procuraRegistro
 
 def procuraRegistro(games, chave):
-     # Defina um padrão de expressão regular para extrair os diferentes campos
+    # Utiliza expressão regular para verificar a correspondência
     padrao = re.compile(r'([A-Za-z0-9\s]+)(\d{4})')
-    # Use o padrão para encontrar os grupos correspondentes na string
-    correspondencias = padrao.match(chave)
     
-    if correspondencias:
-        print("achei")
-    else:
-        print("Registro não encontrado")
+    # Itera sobre a lista de jogos
+    for jogo in games:
+        # Forma a chave para comparação
+        chave_registro = f"{jogo.nome}{jogo.ano}"
+
+        # Verifica a correspondência com a chave fornecida
+        correspondencias = padrao.match(chave_registro)
+
+        # Se encontrou correspondência, imprime o registro e retorna
+        if correspondencias and chave.upper() in chave_registro.upper():
+            print(f"Registro encontrado: {jogo.nome} | {jogo.ano}")
+            return
+
+    # Se não encontrou correspondência
+    print("Registro não encontrado")
 
 '''
 def ler_arquivo(arquivo):
@@ -106,8 +115,9 @@ def lerOperacao(arquivo, jogos):
                 #fazer de novo, mas usar adicionaRegistro
                 nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
                 jogos = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
-                operacoes.append(('inserir', jogos))
         elif operacao == 'remover':
+            print(operacao)
+            print(campos[1])
             procuraRegistro(jogos,campos[1])
     #acho que seria melhor retornar os jogos atualizados
     #mudar codigo
@@ -149,16 +159,18 @@ if __name__== "__main__":
    
 
 
-    #try:
-    #with open(temporario,"w") as arq_temporario:
-        #Escrever arquivo com com registro excluido  
-    #except IOError:
-        #print('Ocorreu um erro ao escrever o arquivo')
+    try:
+        with open(temporario,"w") as arq_temporario:
+            #Escrever arquivo com com registro excluido  
+            print("arquivo temporario foi aberto")
+    except IOError:
+        print('Ocorreu um erro ao escrever o arquivo')
+        
 
-    #try:
-    #with open(saida,"w") as arq_saida:
-        #escrever arquivo com storageCompaction
-    #except IOError:
-        #print('Ocorreu um erro ao escrever o arquivo.')
-            
-   
+    try:
+        with open(saida,"w") as arq_saida:
+            #escrever arquivo com storageCompaction
+            print("Arquivo de saida foi aberto")
+    except IOError:
+        print('Ocorreu um erro ao escrever o arquivo.')
+       
