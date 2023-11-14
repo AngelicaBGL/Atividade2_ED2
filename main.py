@@ -33,7 +33,7 @@ def leituraDoArquivo(arquivo):
         if len(campos) == 9:
             nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = campos
             games.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
-           
+        #fazer um tratamento de erros para os arquivos que tem campos errados
 
     return games, qtdRegistros, top
 
@@ -47,11 +47,8 @@ def adicionaRegistro(games, novoJogo,tamanho):
         if (game.nome == nome and game.produtora == produtora and game.genero==genero and game.plataforma == plataforma and
             game.ano==ano and game.classificacao==classificacao and game.preco==preco and game.midia == midia and
             game.tamanho == tamanhoGame):
-            print("Jogo já {nome} registrado")
+            print("Jogo {} já registrado".format(nome))
             return games, tamanho
-
-    
-        
 
     tamanho +=1
     nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanhoGame = novoJogo
@@ -80,28 +77,29 @@ def procuraRegistro(games, chave, tamanho, top):
             games, tamanho, top = removeRegistro(games,tamanho, top,indice)
             return games, tamanho, top
 
-    print("Registro {chave} não encontrado")
+    print("Registro não encontrado")
+    return games, tamanho, top
 
 #ler as operações
 #se 'i' será inserido um novo jogo usando adicionaRegistro()
 #se 'd' será pesquisado o jogo usando procuraRegistro(), o jogo será apagado em seguida
-def lerOperacao(arquivo, jogos,tamanho, top):
-
+def lerOperacao(arquivo, jogos, qtdRegistros, top):
     for linha in arquivo:
         campos = linha.strip().split(',')
         operacao = campos[0]
+        
         if operacao == 'i':
-            info = campos[1:]
-            info[0] = info[0].lstrip()
-            # Certificare de que há informações suficientes
+            info = [item.lstrip() for item in campos[1:]]  # Remover espaços em branco no início de cada item
+            # Certificar de que há informações suficientes
             if len(info) == 9:
-                jogos, tamanho = adicionaRegistro(jogos, info, tamanho)
+                jogos, qtdRegistros = adicionaRegistro(jogos, info, qtdRegistros)
             else:
                 print("Informações insuficientes para registrar o jogo.")
         elif operacao == 'd':
-            chave = campos[1].replace(" ","")#tirar o espaço do começo
-            jogos,tamanho,top = procuraRegistro(jogos,chave, tamanho,top)
-    return jogos,tamanho,top
+            chave = campos[1].lstrip()  # Remover espaços em branco no início da chave
+            jogos, qtdRegistros, top = procuraRegistro(jogos, chave, qtdRegistros, top)
+
+    return jogos, qtdRegistros, top
 
 #escreve o arquivo com os registros finais
 def escreverArquivoTemporario(arquivo, games,tamanho,top):
@@ -109,12 +107,17 @@ def escreverArquivoTemporario(arquivo, games,tamanho,top):
     for game in games:
         linha = f"{game.nome}|{game.produtora}|{game.genero}|{game.plataforma}|{game.ano}|{game.classificacao}|{game.preco}|{game.midia}|{game.tamanho}\n"
         arquivo.write(linha)
-    pass
+    
 
 
 #função para compactar o arquivo
-#storageCompaction()
-#se voce quiser ajudar com alguma coisa, poded fazer essa
+def storageCompaction(arquivo, games, qtdRegistros, top):
+    arquivo.write("REG.N="+str(qtdRegistros)+" TOP="+str(top)+"\n")
+    for game in games:
+        if not game.nome.startswith('*'):
+            linha = f"{game.nome}|{game.produtora}|{game.genero}|{game.plataforma}|{game.ano}|{game.classificacao}|{game.preco}|{game.midia}|{game.tamanho}\n"
+            arquivo.write(linha)
+
             
 
 if __name__== "__main__":
@@ -160,7 +163,7 @@ if __name__== "__main__":
     try:
         with open(saida,"w") as arq_saida:
             #escrever arquivo com storageCompaction
-            print("Arquivo de saida foi aberto")
+            storageCompaction(arq_saida, jogos, qtdRegistros, top)
     except IOError:
         print('Ocorreu um erro ao escrever o arquivo.')
        
