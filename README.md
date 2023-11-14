@@ -7,5 +7,5 @@ python3 main.py entrada1.txt entrada2.txt saida1.txt saida2.txt
   - [x] ~~def adicionaRegistro(arq, game)~~
   - [x] ~~def procuraRegistro(arq, game)~~
   - [x] ~~def removeRegistro(arq, game)~~
-  - [ ] def storageCompaction(arq)
+  - [x] ~~def storageCompaction(arq)~~
   - [ ] tratamento de erros
