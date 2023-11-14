@@ -1,5 +1,6 @@
 from Game import *
 import sys
+import re
 
 def leituraDoArquivo(arquivo):
     linha = arquivo.readline()
@@ -50,23 +51,16 @@ def escritaDoArquivo(arquivo, games):
 #def removeRegistro()
 #dentro dessa função deve-se chamar procuraRegistro
 
-def procuraRegistro(games, chaves):
-    #procurar registro e já deletar
-    encontrou = False
-    linhas = []
-    #adaptar codigo, a chave precisa ser dividida em duas
-    for i, game in enumerate(games):
-        if chaves.upper() in game.upper():  # Procura no formato canônico
-            games[i] = "*|" + game[2:]
-            encontrou = True
-            #escrever o registro modificado no arquivo
-            #mudar topo
-    if not encontrou:
+def procuraRegistro(games, chave):
+     # Defina um padrão de expressão regular para extrair os diferentes campos
+    padrao = re.compile(r'([A-Za-z0-9\s]+)(\d{4})')
+    # Use o padrão para encontrar os grupos correspondentes na string
+    correspondencias = padrao.match(chave)
+    
+    if correspondencias:
+        print("achei")
+    else:
         print("Registro não encontrado")
-
-    if encontrou:
-        linhas = [game for game in games if not game.startswith('*|')]
-
 
 '''
 def ler_arquivo(arquivo):
@@ -111,15 +105,13 @@ def lerOperacao(arquivo, jogos):
             if len(info) == 9:
                 #fazer de novo, mas usar adicionaRegistro
                 nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
-                jogo = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
-                operacoes.append(('inserir', jogo))
+                jogos = Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho)
+                operacoes.append(('inserir', jogos))
         elif operacao == 'remover':
-            # Lógica para remover um jogo, se necessário
-            pass
-        # Adicione mais lógica para outras operações, se necessário
+            procuraRegistro(jogos,campos[1])
     #acho que seria melhor retornar os jogos atualizados
     #mudar codigo
-    return operacoes
+    return jogos
 
             
             
@@ -149,7 +141,8 @@ if __name__== "__main__":
     try:
         with open(operacao,"r") as arq_operacao:
             #ler operações a serem realizadas
-            lerOperacao(arq_operacao,jogos)
+            #e executar o que é pedido
+            jogos = lerOperacao(arq_operacao,jogos)
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
     
