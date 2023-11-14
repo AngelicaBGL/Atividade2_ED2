@@ -35,64 +35,30 @@ def leituraDoArquivo(arquivo):
 
     return games, qtdRegistros, top
 
-#def adicionaRegistro(arq, game):
-#se voce quiser ajudar com alguma coisa, poded fazer essa
-    
+def adicionaRegistro(games, novoJogo,tamanho):
+    #adicionar um jogo na lista
+    #atualizar a qtd de registros
+    return games, tamanho
 
-# basicamente escrever um registro no final
-'''
-def escritaDoArquivo(arquivo, games):
-    linha=""
-    for game in games:
-        linha = f"{game.nome}|{game.produtora}|{game.genero}|{game.plataforma}|{game.ano}|{game.classificacao}|{game.preco}|{game.midia}|{game.tamanho}\n"
-        arquivo.write(linha)
 
-'''
-#def removeRegistro()
-#estou trabalhando nessa função no momento, logo mais irei atualizar ~Angélica às 9:54
-#dentro dessa função deve-se chamar procuraRegistro
+def removeRegistro(jogos,tamanho,top,indice):
+    #preciso colocar *(top)| na frente do nome
+    #atualizar top e tamanho
+    return jogos, tamanho, top
 
-def procuraRegistro(games, chave):
+def procuraRegistro(games, chave, tamanho, top, indice):
+    indice=0
     for game in games:
         chave_registro = f"{game.nome}{game.ano}"
         chave_registro = chave_registro.replace(" ","") # tirar os espaços
+        indice += 1
         if chave.upper() in chave_registro.upper():
-            print(f"Registro encontrado: {game.nome} | {game.ano}")
-            #estou trabalhando nessa função no momento, logo mais irei atualizar ~Angélica às 9:54
-            return
+            games, tamanho, top = removeRegistro(games,tamanho, top,indice)
+            return games, tamanho, top
 
-    print("Registro não encontrado")
+    print("Registro {chave} não encontrado")
 
-'''
-def ler_arquivo(arquivo):
-    registros = []
-    arquivo.seek(0)
-    for linha in arquivo:
-        registros.append(linha.strip())  # Salva cada registro em uma lista
-    return registros
-
-def storageCompaction(registros, chave):
-    encontrou = False
-    linhas = []
-
-    for i, registro in enumerate(registros):
-        if chave.upper() in registro.upper():  # Procura no formato canônico
-            registros[i] = "*|" + registro[2:]
-            encontrou = True
-            #escrever o registro modificado no arquivo
-    if not encontrou:
-        print("Registro não encontrado")
-
-    if encontrou:
-        linhas = [registro for registro in registros if not registro.startswith('*|')]
-
-    with open("storageCompaction.txt", 'w') as arq_saida:
-        for linha in linhas:
-            arq_saida.write(linha + '\n')
-'''
-
-
-def lerOperacao(arquivo, jogos):
+def lerOperacao(arquivo, jogos,tamanho, top):
 
     for linha in arquivo:
         campos = linha.strip().split(',')
@@ -100,17 +66,15 @@ def lerOperacao(arquivo, jogos):
         print(operacao)
         if operacao == 'i':
             info = campos[1:]
-            # Certifique-se de que há informações suficientes para criar uma instância de Game
+            # Certificare de que há informações suficientes
             if len(info) == 9:
                 #fazer de novo, mas usar adicionaRegistro
-                nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
-                jogos.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
+                jogos, tamanho = adicionaRegistro(jogos, info, tamanho)
         elif operacao == 'd':
             chave = campos[1].replace(" ","")#tirar o espaço do começo
-            procuraRegistro(jogos,chave)
-    #acho que seria melhor retornar os jogos atualizados
-    #mudar codigo
-    return jogos
+            jogos,tamanho,top = procuraRegistro(jogos,chave, tamanho,top)
+
+    return jogos,tamanho,top
 
 #escreverArquivoTemporario()
 #se voce quiser ajudar com alguma coisa, poded fazer essa
@@ -145,7 +109,7 @@ if __name__== "__main__":
         with open(operacao,"r") as arq_operacao:
             #ler operações a serem realizadas
             #e executar o que é pedido
-            jogos = lerOperacao(arq_operacao,jogos)
+            jogos,qtdRegistros,top = lerOperacao(arq_operacao,jogos,qtdRegistros,top)
     except FileNotFoundError:
         print('O arquivo não foi encontrado.')
     
