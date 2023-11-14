@@ -36,11 +36,10 @@ def leituraDoArquivo(arquivo):
     return games, qtdRegistros, top
 
 #def adicionaRegistro(arq, game):
+#se voce quiser ajudar com alguma coisa, poded fazer essa
     
 
 # basicamente escrever um registro no final
-# não esquecer o topo da pilha
-#modificar codigo, lembrar que estamos trabalhando com tamanho fixo e campos variados
 '''
 def escritaDoArquivo(arquivo, games):
     linha=""
@@ -50,6 +49,7 @@ def escritaDoArquivo(arquivo, games):
 
 '''
 #def removeRegistro()
+#estou trabalhando nessa função no momento, logo mais irei atualizar ~Angélica às 9:54
 #dentro dessa função deve-se chamar procuraRegistro
 
 def procuraRegistro(games, chave):
@@ -58,6 +58,7 @@ def procuraRegistro(games, chave):
         chave_registro = chave_registro.replace(" ","") # tirar os espaços
         if chave.upper() in chave_registro.upper():
             print(f"Registro encontrado: {game.nome} | {game.ano}")
+            #estou trabalhando nessa função no momento, logo mais irei atualizar ~Angélica às 9:54
             return
 
     print("Registro não encontrado")
@@ -111,7 +112,11 @@ def lerOperacao(arquivo, jogos):
     #mudar codigo
     return jogos
 
-            
+#escreverArquivoTemporario()
+#se voce quiser ajudar com alguma coisa, poded fazer essa
+
+#storageCompaction()
+#se voce quiser ajudar com alguma coisa, poded fazer essa
             
 
 if __name__== "__main__":
