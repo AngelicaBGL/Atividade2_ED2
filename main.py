@@ -36,6 +36,7 @@ def leituraDoArquivo(arquivo):
     return games, qtdRegistros, top
 
 #def adicionaRegistro(arq, game):
+    
 
 # basicamente escrever um registro no final
 # não esquecer o topo da pilha
@@ -55,7 +56,6 @@ def procuraRegistro(games, chave):
     for game in games:
         chave_registro = f"{game.nome}{game.ano}"
         chave_registro = chave_registro.replace(" ","") # tirar os espaços
-        # Utilizamos lower() para tornar a comparação sem distinção entre maiúsculas e minúsculas
         if chave.upper() in chave_registro.upper():
             print(f"Registro encontrado: {game.nome} | {game.ano}")
             return
