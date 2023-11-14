@@ -44,11 +44,10 @@ def adicionaRegistro(games, novoJogo,tamanho):
 
     for game in games:
         #comparar todos os campos para conferir se o jogo já esta registrado
-        #game.nome in nome (usei in apenas para desconsiderar um espaço que tem no começo da linha)
-        if (game.nome in nome and game.produtora == produtora and game.genero==genero and game.plataforma == plataforma and
+        if (game.nome == nome and game.produtora == produtora and game.genero==genero and game.plataforma == plataforma and
             game.ano==ano and game.classificacao==classificacao and game.preco==preco and game.midia == midia and
             game.tamanho == tamanhoGame):
-            print("Jogo já registrado")
+            print("Jogo já {nome} registrado")
             return games, tamanho
 
     
@@ -93,6 +92,7 @@ def lerOperacao(arquivo, jogos,tamanho, top):
         operacao = campos[0]
         if operacao == 'i':
             info = campos[1:]
+            info[0] = info[0].lstrip()
             # Certificare de que há informações suficientes
             if len(info) == 9:
                 jogos, tamanho = adicionaRegistro(jogos, info, tamanho)
@@ -104,7 +104,12 @@ def lerOperacao(arquivo, jogos,tamanho, top):
     return jogos,tamanho,top
 
 #escreve o arquivo com os registros finais
-#escreverArquivoTemporario()
+def escreverArquivoTemporario(arquivo, games,tamanho,top):
+    arquivo.write("REG.N="+str(tamanho)+" TOP="+str(top)+"\n")
+    for game in games:
+        linha = f"{game.nome}|{game.produtora}|{game.genero}|{game.plataforma}|{game.ano}|{game.classificacao}|{game.preco}|{game.midia}|{game.tamanho}\n"
+        arquivo.write(linha)
+    pass
 
 
 #função para compactar o arquivo
@@ -146,8 +151,8 @@ if __name__== "__main__":
     #arquivo temporário
     try:
         with open(temporario,"w") as arq_temporario:
-            #Escrever arquivo com com registro excluido  
-            print("arquivo temporario foi aberto")
+            #Escrever arquivo com os registros excluidos
+            escreverArquivoTemporario(arq_temporario, jogos,qtdRegistros,top)
     except IOError:
         print('Ocorreu um erro ao escrever o arquivo')      
 
