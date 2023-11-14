@@ -39,8 +39,24 @@ def leituraDoArquivo(arquivo):
 
 # adicionar novo jogo na lista
 def adicionaRegistro(games, novoJogo,tamanho):
-    #adicionar um jogo na lista
-    #atualizar a qtd de registros
+    # Descompactar os dados do novoJogo
+    nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanhoGame = novoJogo
+
+    for game in games:
+        #comparar todos os campos para conferir se o jogo já esta registrado
+        #game.nome in nome (usei in apenas para desconsiderar um espaço que tem no começo da linha)
+        if (game.nome in nome and game.produtora == produtora and game.genero==genero and game.plataforma == plataforma and
+            game.ano==ano and game.classificacao==classificacao and game.preco==preco and game.midia == midia and
+            game.tamanho == tamanhoGame):
+            print("Jogo já registrado")
+            return games, tamanho
+
+    
+        
+
+    tamanho +=1
+    nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanhoGame = novoJogo
+    games.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanhoGame))
     return games, tamanho
 
 #remover jogo, atualizar informações para cabeçalho
@@ -57,16 +73,12 @@ def removeRegistro(jogos,tamanho,top,indice):
 #se encontrar será removido
 def procuraRegistro(games, chave, tamanho, top):
     indice=-1 # as linhas começam em 0
-    print(tamanho)
     for game in games:
         chave_registro = f"{game.nome}{game.ano}"
         chave_registro = chave_registro.replace(" ","") # tirar os espaços
         indice += 1
         if chave.upper() in chave_registro.upper():
             games, tamanho, top = removeRegistro(games,tamanho, top,indice)
-            print(games[indice])
-            print(tamanho)
-            print(top)
             return games, tamanho, top
 
     print("Registro {chave} não encontrado")
@@ -79,22 +91,21 @@ def lerOperacao(arquivo, jogos,tamanho, top):
     for linha in arquivo:
         campos = linha.strip().split(',')
         operacao = campos[0]
-        print(operacao)
         if operacao == 'i':
             info = campos[1:]
             # Certificare de que há informações suficientes
             if len(info) == 9:
-                #fazer de novo, mas usar adicionaRegistro
                 jogos, tamanho = adicionaRegistro(jogos, info, tamanho)
+            else:
+                print("Informações insuficientes para registrar o jogo.")
         elif operacao == 'd':
             chave = campos[1].replace(" ","")#tirar o espaço do começo
             jogos,tamanho,top = procuraRegistro(jogos,chave, tamanho,top)
-
     return jogos,tamanho,top
 
 #escreve o arquivo com os registros finais
 #escreverArquivoTemporario()
-#se voce quiser ajudar com alguma coisa, poded fazer essa
+
 
 #função para compactar o arquivo
 #storageCompaction()
