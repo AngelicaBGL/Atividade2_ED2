@@ -52,13 +52,11 @@ def escritaDoArquivo(arquivo, games):
 #dentro dessa função deve-se chamar procuraRegistro
 
 def procuraRegistro(games, chave):
-    padrao = re.compile(r'([A-Za-z0-9\s]+)(\d{4})')
-    
     for game in games:
         chave_registro = f"{game.nome}{game.ano}"
-        correspondencias = padrao.match(chave_registro)
-
-        if correspondencias and chave.upper() in chave_registro.upper():
+        chave_registro = chave_registro.replace(" ","") # tirar os espaços
+        # Utilizamos lower() para tornar a comparação sem distinção entre maiúsculas e minúsculas
+        if chave.upper() in chave_registro.upper():
             print(f"Registro encontrado: {game.nome} | {game.ano}")
             return
 
@@ -107,7 +105,8 @@ def lerOperacao(arquivo, jogos):
                 nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho = info
                 jogos.append(Game(nome, produtora, genero, plataforma, ano, classificacao, preco, midia, tamanho))
         elif operacao == 'd':
-            procuraRegistro(jogos,campos[1])
+            chave = campos[1].replace(" ","")#tirar o espaço do começo
+            procuraRegistro(jogos,chave)
     #acho que seria melhor retornar os jogos atualizados
     #mudar codigo
     return jogos
